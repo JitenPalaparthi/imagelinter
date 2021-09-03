@@ -1,0 +1,30 @@
+---
+includeExts:
+- ".yaml"
+- ".sh"
+- ".yml"
+includeFiles:
+- README.md
+includeLines:
+- 'image:'
+- FROM
+excludeLines:
+- "#"
+- "//"
+excludeFiles:
+- "cli/"
+- .git/
+- docs/
+- ".gitignore"
+- ".github/"
+- "*.md"
+- "*.sh"
+succesValidators:
+- apt-get
+- apt
+- yum
+- "/lib/x86_64-linux-gnu"
+- "/usr/lib/x86_64-linux-gnu"
+- "imgpkg"
+failureValidators:
+- Alpine
