@@ -1,24 +1,12 @@
 ---
 includeExts:
 - ".yaml"
-- ".sh"
 - ".yml"
-includeFiles:
-- README.md
 includeLines:
 - 'image:'
 - FROM
-excludeLines:
-- "#"
-- "//"
-excludeFiles:
-- "cli/"
-- .git/
-- docs/
-- ".gitignore"
-- ".github/"
-- "*.md"
-- "*.sh"
+matchPattern:
+- "../tce/addons/packages/*/*/bundle/.imgpkg/*"
 succesValidators:
 - apt-get
 - apt
