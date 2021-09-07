@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
 
 	"gopkg.in/yaml.v2"
@@ -15,9 +14,8 @@ import (
 
 type ImageLintConfig struct {
 	IncludeExts       []string               `yaml:"includeExts"`
-	IncludeFiles      []string               `yaml:"includeFiles"`
+	MatchPattern      []string               `yaml:"matchPattern"`
 	IncludeLines      []string               `yaml:"includeLines"`
-	ExcludeFiles      []string               `yaml:"excludeFiles"`
 	SuccessValidators []string               `yaml:"succesValidators"`
 	FailureValidators []string               `yaml:"failureValidators"`
 	ImageMap          map[string][]ImageLint // consists map as the key and file details as values
@@ -65,31 +63,23 @@ func (imc *ImageLintConfig) Init(dir string) error {
 			if err != nil {
 				return err
 			}
-			for _, exclude := range imc.ExcludeFiles {
-				if strings.HasPrefix(path, exclude) {
-					goto jumpOut
-
-				} else if strings.HasPrefix(exclude, "*.") {
-					if filepath.Ext(path) == filepath.Ext(exclude) {
-						goto jumpOut
+			// if the pattern is not match move next
+			matched := false
+			for _, match := range imc.MatchPattern {
+				m, _ := filepath.Match(match, path)
+				if m {
+					//fmt.Println(path, m)
+					for _, ext := range imc.IncludeExts {
+						if ext == filepath.Ext(path) {
+							imc.ReadFile(path)
+						}
 					}
-
-				} else if string(exclude[len(exclude)-1]) != "/" { // its a file
-					if path == exclude {
-						goto jumpOut
-					}
+					matched = true
+					break
 				}
 			}
-			for _, ext := range imc.IncludeExts {
-				if ext == filepath.Ext(path) {
-					imc.ReadFile(path)
-				}
-			}
-
-			for _, f := range imc.IncludeFiles {
-				if f == path {
-					imc.ReadFile(path)
-				}
+			if !matched {
+				goto jumpOut
 			}
 		jumpOut:
 			return nil
@@ -164,11 +154,6 @@ func (imc *ImageLintConfig) ReadFile(path string) error {
 		return err
 	}
 	return nil
-}
-
-func contains(s []string, searchterm string) bool {
-	i := sort.SearchStrings(s, searchterm)
-	return i < len(s) && s[i] == searchterm
 }
 
 func canIgnore(line string) bool {
