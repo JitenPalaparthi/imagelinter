@@ -25,27 +25,22 @@ imagelinter supports few configurations.The below is the default configuration f
 
 ```yaml
 ---
-includeExts:
+includeExts: # Files with these extensions are considered
 - ".yaml"
-- ".sh"
 - ".yml"
-includeFiles:
-- README.md
-includeLines:
+includeLines: # These are the lines from eachfile will be processed
 - 'image:'
 - FROM
-excludeLines:
-- "#"
-- "//"
-excludeFiles:
-- "cli/"
-- .git/
-- docs/
-- ".gitignore"
-- ".github/"
-- "*.md"
-- "*.sh"
-succesValidators:
+matchPattern: # Files from this pattern are considered
+- "packages/*/*/bundle/.imgpkg/*"
+ignoreImages: # These images will be ignored from the further process
+- "index.docker.io/grafana/grafana@sha256:4e5835bcfd55cf72563a06932f10c75d9d92a0e1334a4c83eaa9c5b897370b25"
+- "index.docker.io/rancher/local-path-provisioner@sha256:9666b1635fec95d4e2251661e135c90678b8f45fd0f8324c55db99c80e2a958c"
+- "k8s.gcr.io/external-dns/external-dns@sha256:e49f63e07498ce8484c9e9050c1dfbc2584f4c9c262433d80387e855725e6bce"
+- "index.docker.io/kiwigrid/k8s-sidecar@sha256:444be8cef8b25b4aaddea692ae09e3883d9064c0d31b43c4ba388a83c920552f"
+- "index.docker.io/minio/minio@sha256:e7e9a563f52bf95f614e8017c2da9bd5d9f2f1ae0dc1127767fa341b3ae22088"
+- "gcr.io/cadvisor/cadvisor@sha256:10638ceca79c01f4045f4a645242e763fe62eeb71d859ff93b09b0854a0d2220"
+succesValidators: 
 - apt-get
 - apt
 - yum
@@ -54,6 +49,7 @@ succesValidators:
 - "imgpkg"
 failureValidators:
 - Alpine
+
 ```
 
 ## How to install imagelinter
