@@ -170,8 +170,8 @@ func main() {
 		imc.ShowNotIdentifiedSummary()
 		imc.ShowFailSummary()
 	}
-
 	if isFatal {
 		os.Exit(1)
 	}
+
 }
