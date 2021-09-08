@@ -14,6 +14,7 @@ type ImageLintConfig struct {
 	IncludeExts       []string               `yaml:"includeExts"`
 	MatchPattern      []string               `yaml:"matchPattern"`
 	IncludeLines      []string               `yaml:"includeLines"`
+	IgnoreImages      []string               `yaml:"ignoreImages"`
 	SuccessValidators []string               `yaml:"succesValidators"`
 	FailureValidators []string               `yaml:"failureValidators"`
 	ImageMap          map[string][]ImageLint // consists map as the key and file details as values
@@ -101,7 +102,6 @@ func (imc *ImageLintConfig) ReadFile(path string) error {
 	for s.Scan() {
 		// ignore lines
 		// if the line is commented then skip it
-
 		line := strings.Trim(s.Text(), " ")
 
 		// This is for go or programming comments only
@@ -139,6 +139,9 @@ func (imc *ImageLintConfig) ReadFile(path string) error {
 					if canIgnore(ln) {
 						continue
 					}
+					if imc.CanIgnoreImage(ln) {
+						continue
+					}
 					ilints := imc.ImageMap[ln]
 					imc.ImageMap[ln] = append(ilints, ImageLint{Path: path, Position: Position{Row: count, Col: index}, Status: "YetToLint"})
 				}
@@ -148,7 +151,6 @@ func (imc *ImageLintConfig) ReadFile(path string) error {
 	}
 	err = s.Err()
 	if err != nil {
-		//fmt.Println(err)
 		return err
 	}
 	return nil
@@ -161,6 +163,15 @@ func canIgnore(line string) bool {
 	}
 	for _, s := range ignores {
 		if strings.Contains(strings.Trim(line, " "), s) {
+			return true
+		}
+	}
+	return false
+}
+
+func (imc *ImageLintConfig) CanIgnoreImage(line string) bool {
+	for _, ln := range imc.IgnoreImages {
+		if ln == line {
 			return true
 		}
 	}
