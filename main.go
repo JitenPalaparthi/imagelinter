@@ -151,10 +151,6 @@ func main() {
 		// isFatal = true
 		wrapper.DeleteContainer()
 	}
-	if *showSumary {
-		imc.ShowSummary()
-		fmt.Println()
-	}
 	switch *detailedSummary {
 	case "Fail", "fail", "FAIL":
 		imc.ShowFailSummary()
@@ -169,6 +165,10 @@ func main() {
 		imc.ShowPullFailedSummary()
 		imc.ShowNotIdentifiedSummary()
 		imc.ShowFailSummary()
+	}
+	if *showSumary {
+		imc.ShowSummary()
+		fmt.Println()
 	}
 	if isFatal {
 		os.Exit(1)
