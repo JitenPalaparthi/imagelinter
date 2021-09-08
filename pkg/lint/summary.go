@@ -38,8 +38,8 @@ func (imc *ImageLintConfig) ShowSummary() {
 	fmt.Println("Total", string(colorRed), "Fail", string(colorReset), "                :", fail)
 	fmt.Println("Total", string(colorMagenta), "Pull Failed", string(colorReset), "         :", pullFailed)
 	fmt.Println("Total", string(colorPurple), "Not Identified", string(colorReset), "      :", notIdentified)
-	fmt.Println("[Note:All totals for Pass|Fail|Not Identified|Pull Failed are based on number of files]")
-	fmt.Println("---------------------------------------------------------------------------------------")
+	fmt.Println("[Note:All totals for Pass|Fail|Not Identified|Pull Failed are based on number of occurrences]")
+	fmt.Println("--------------------------------------------------------------------------------------------")
 }
 
 func (imc *ImageLintConfig) ShowFailSummary() {
@@ -58,7 +58,6 @@ func (imc *ImageLintConfig) ShowFailSummary() {
 		}
 	}
 	fmt.Println("Total", string(colorRed), "Fail", string(colorReset), "          :", fail)
-	fmt.Println("---------------------------------------------------------------------------------------")
 }
 
 func (imc *ImageLintConfig) ShowPassSummary() {
@@ -77,7 +76,6 @@ func (imc *ImageLintConfig) ShowPassSummary() {
 		}
 	}
 	fmt.Println("Total", string(colorBlue), "Pass", string(colorReset), "          :", pass)
-	fmt.Println("---------------------------------------------------------------------------------------")
 }
 
 func (imc *ImageLintConfig) ShowNotIdentifiedSummary() {
@@ -96,7 +94,6 @@ func (imc *ImageLintConfig) ShowNotIdentifiedSummary() {
 		}
 	}
 	fmt.Println("Total", string(colorBlue), "Not Identified", string(colorPurple), "          :", notIdentified)
-	fmt.Println("---------------------------------------------------------------------------------------")
 }
 
 func (imc *ImageLintConfig) ShowPullFailedSummary() {
@@ -115,7 +112,6 @@ func (imc *ImageLintConfig) ShowPullFailedSummary() {
 		}
 	}
 	fmt.Println("Total", string(colorBlue), "Pull Failed", string(colorMagenta), "          :", pullFailed)
-	fmt.Println("---------------------------------------------------------------------------------------")
 }
 
 func (imc *ImageLintConfig) OnPass(message, image string) {
